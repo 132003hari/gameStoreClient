@@ -12,7 +12,9 @@ pipeline {
         stage('Build Blazor App') {
             steps {
                 script {
-                dotnet build
+                sh '''
+                dotnet build Jenkins-build.sln
+                '''
                 }
             }
         }
