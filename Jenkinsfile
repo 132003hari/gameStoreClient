@@ -12,7 +12,7 @@ pipeline {
         stage('Build Blazor App') {
             steps {
                 script {
-                    sh 'cd /path/to/your/blazor/app && dotnet publish -c Release -o publish_output'
+                    sh 'cd /D:\projects\GameStoreClient && dotnet publish -c Release -o publish_output'
                 }
             }
         }
