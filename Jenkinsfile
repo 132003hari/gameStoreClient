@@ -1,32 +1,18 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
-            tools {
-                dotnetsdk 'dotnet-sdk-7.0'
-            }
+        stage('Checkout') {
             steps {
-                echo 'Building..'
-                sh '''
-                dotnet build
-                '''
+                checkout scm
             }
         }
-        stage('Test') {
+        stage('Build Blazor App') {
             steps {
-                echo 'Testing..'
-                sh '''
-                echo "Testing Successfull.."
-                '''
+                script {
+                    sh 'cd /path/to/your/blazor/app && dotnet publish -c Release -o publish_output'
+                }
             }
         }
-        stage('Deliver') {
-            steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
-                '''
-            }
-        }
+        // Add deployment stage here
     }
 }
