@@ -1,23 +1,39 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
-            tools {
-                dotnetsdk 'dotnet-sdk-7.0'
-            }
-            steps {
-                checkout scm
-            }
-        }
-        stage('Build Blazor App') {
             steps {
                 script {
-                sh '''
-                dotnet build Jenkins-build.sln
-                '''
+                    // Checkout the source code from the repository
+                    checkout scm
                 }
             }
         }
-        // Add deployment stage here
+
+        stage('Build') {
+            steps {
+                script {
+                    // Build the Blazor project
+                    sh 'dotnet build Gamestore.client.sln'
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                script {
+                    // Publish the Blazor project
+                    sh 'dotnet publish MyBlazorApp/MyBlazorApp.csproj -c Release -o publish'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Archive the published files
+            archiveArtifacts artifacts: 'publish/**', allowEmptyArchive: true
+        }
     }
 }
